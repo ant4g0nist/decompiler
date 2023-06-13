@@ -1,0 +1,5 @@
+target create examples/sample
+breakpoint set -n main
+plugin load build/src/decompiler.dylib
+run
+decompile

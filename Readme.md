@@ -2,7 +2,7 @@
 RetDec plugin for LLDB. RetDec is a machine-code decompiler based on LLVM.
 
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/ant4g0nist/ManuFuzzer/pulls)
-[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/ant4g0nist/ManuFuzzer/blob/main/LICENSE)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/ant4g0nist/decompiler/blob/main/LICENSE)
 [![Follow Twitter](https://img.shields.io/twitter/follow/ant4g0nist?style=social)](https://twitter.com/ant4g0nist)
 
 

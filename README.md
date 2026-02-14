@@ -106,4 +106,6 @@ The `src/include/` directory contains LLDB API headers from the [LLVM project](h
 
 ## License
 
-LGPL (same as Ghidra's decompiler)
+MIT — see [LICENSE](LICENSE).
+
+Third-party components retain their original licenses (Apache 2.0).

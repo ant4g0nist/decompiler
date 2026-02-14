@@ -7,12 +7,11 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(ZLIB REQUIRED)
 
 # ---- Find LLDB ----
-# Use bundled LLDB headers from the existing decompiler project
-# These headers provide the LLDB SB API declarations
-set(LLDB_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/../decompiler/src/include")
+# Bundled LLDB API headers (from llvm-project)
+set(LLDB_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/src/include")
 if(NOT EXISTS "${LLDB_INCLUDE_DIR}/lldb/API/LLDB.h")
     message(FATAL_ERROR "LLDB headers not found at ${LLDB_INCLUDE_DIR}. "
-        "Ensure the decompiler project with LLDB headers exists at ../decompiler/")
+        "Run: git submodule update --init, or see README for setup instructions.")
 endif()
 message(STATUS "Using LLDB headers from: ${LLDB_INCLUDE_DIR}")
 
@@ -72,6 +71,7 @@ add_library(lldbghidra SHARED
     src/LLDBTypeFactory.cpp
     src/LLDBCommentDatabase.cpp
     src/LLDBPrintC.cpp
+    src/EmitAnsi.cpp
     src/DecompileCommand.cpp
 )
 

@@ -16,6 +16,7 @@ protected:
 public:
     explicit LLDBPrintC(Architecture *g, const string &nm = "c-language");
     void setOptionNoCasts(bool nc);
+    void enableAnsiColors(void);
 };
 
 class LLDBPrintCCapability : public PrintLanguageCapability {

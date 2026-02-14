@@ -1,6 +1,7 @@
 /* lldbghidra - LGPL - Copyright 2026 */
 
 #include "LLDBPrintC.h"
+#include "EmitAnsi.h"
 #include <architecture.hh>
 #include <varnode.hh>
 
@@ -25,6 +26,12 @@ LLDBPrintC::LLDBPrintC(Architecture *g, const string &nm) : PrintC(g, nm) {
 
 void LLDBPrintC::setOptionNoCasts(bool nc) {
     option_nocasts = nc;
+}
+
+void LLDBPrintC::enableAnsiColors(void) {
+    EmitPrettyPrint *pp = dynamic_cast<EmitPrettyPrint *>(emit);
+    if (pp)
+        pp->setLowLevelEmitter(new EmitAnsi());
 }
 
 void LLDBPrintC::pushUnnamedLocation(const Address &addr, const Varnode *vn, const PcodeOp *op) {

@@ -25,6 +25,7 @@
 #include <mutex>
 #include <cstdlib>
 #include <cstring>
+#include <unistd.h>
 
 using namespace ghidra;
 
@@ -209,8 +210,16 @@ bool DecompileCommand::DoExecute(lldb::SBDebugger debugger, char **command,
 
         // Output C code
         std::stringstream outStream;
-        arch.print->setOutputStream(&outStream);
         arch.setPrintLanguage("lldb-c-language");
+        arch.print->setOutputStream(&outStream);
+
+        // Enable ANSI syntax highlighting if output is a TTY
+        if (::isatty(STDOUT_FILENO)) {
+            LLDBPrintC *printc = dynamic_cast<LLDBPrintC *>(arch.print);
+            if (printc)
+                printc->enableAnsiColors();
+        }
+
         arch.print->docFunction(func);
 
         std::string output = outStream.str();

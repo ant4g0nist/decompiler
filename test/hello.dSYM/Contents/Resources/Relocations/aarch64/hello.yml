@@ -1,0 +1,5 @@
+---
+triple:          'arm64-apple-darwin'
+binary-path:     '/Users/ant4g0nist/Desktop/Research/macos/Decom/lldbghidra/test/hello'
+relocations:     []
+...

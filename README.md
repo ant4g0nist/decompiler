@@ -104,6 +104,8 @@ The `third_party/ghidra-decompiler/` directory contains Ghidra's decompiler C++ 
 
 The `src/include/` directory contains LLDB API headers from the [LLVM project](https://github.com/llvm/llvm-project) (Apache 2.0 with LLVM exceptions).
 
+See `THIRD_PARTY_NOTICES.md` for license and notice references.
+
 ## License
 
 MIT — see [LICENSE](LICENSE).

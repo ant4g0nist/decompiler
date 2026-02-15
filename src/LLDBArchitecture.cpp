@@ -1,4 +1,4 @@
-/* lldbghidra - LGPL - Copyright 2026 */
+/* lldbghidra - MIT License - Copyright 2026 */
 
 #include "LLDBArchitecture.h"
 #include "LLDBLoadImage.h"

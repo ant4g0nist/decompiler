@@ -1,4 +1,4 @@
-/* lldbghidra - LGPL - Copyright 2026 */
+/* lldbghidra - MIT License - Copyright 2026 */
 
 #include "DecompileCommand.h"
 #include "LLDBArchitecture.h"
@@ -24,7 +24,9 @@
 #include <sstream>
 #include <mutex>
 #include <cstdlib>
+#include <cerrno>
 #include <cstring>
+#include <cctype>
 #include <unistd.h>
 
 using namespace ghidra;
@@ -35,9 +37,23 @@ static std::recursive_mutex decompiler_mutex;
 
 static lldb::addr_t parseAddress(const char *str) {
     if (!str) return LLDB_INVALID_ADDRESS;
-    char *end;
-    lldb::addr_t addr = strtoull(str, &end, 0);
+
+    // Skip leading whitespace
+    while (*str && std::isspace(static_cast<unsigned char>(*str))) str++;
+    if (*str == '\0') return LLDB_INVALID_ADDRESS;
+    if (*str == '-') return LLDB_INVALID_ADDRESS;
+
+    errno = 0;
+    char *end = nullptr;
+    unsigned long long ull = strtoull(str, &end, 0);
     if (end == str) return LLDB_INVALID_ADDRESS;
+    if (errno == ERANGE) return LLDB_INVALID_ADDRESS;
+
+    // Require full consumption (allow trailing whitespace)
+    while (end && *end && std::isspace(static_cast<unsigned char>(*end))) end++;
+    if (end && *end != '\0') return LLDB_INVALID_ADDRESS;
+
+    lldb::addr_t addr = static_cast<lldb::addr_t>(ull);
     return addr;
 }
 

@@ -1,4 +1,4 @@
-/* lldbghidra - LGPL - Copyright 2026 */
+/* lldbghidra - MIT License - Copyright 2026 */
 
 #include "LLDBLoadImage.h"
 #include <lldb/API/SBError.h>
@@ -17,11 +17,14 @@ LLDBLoadImage::LLDBLoadImage(lldb::SBTarget target, lldb::SBProcess process,
 }
 
 void LLDBLoadImage::loadFill(uint1 *ptr, int4 size, const Address &addr) {
+    if (ptr == nullptr || size <= 0) return;
+    const size_t req = static_cast<size_t>(size);
+
     lldb::SBError error;
     size_t bytesRead = 0;
 
     if (process.IsValid()) {
-        bytesRead = process.ReadMemory(addr.getOffset(), ptr, size, error);
+        bytesRead = process.ReadMemory(addr.getOffset(), ptr, req, error);
     }
 
     // If process read failed or no process, try reading from target (static)
@@ -29,13 +32,15 @@ void LLDBLoadImage::loadFill(uint1 *ptr, int4 size, const Address &addr) {
         lldb::SBAddress sbAddr;
         sbAddr.SetLoadAddress(addr.getOffset(), target);
         if (sbAddr.IsValid()) {
-            bytesRead = target.ReadMemory(sbAddr, ptr, size, error);
+            bytesRead = target.ReadMemory(sbAddr, ptr, req, error);
         }
     }
 
+    if (bytesRead > req) bytesRead = req;
+
     // Zero-fill any bytes we couldn't read
-    if (bytesRead < (size_t)size) {
-        memset(ptr + bytesRead, 0, size - bytesRead);
+    if (bytesRead < req) {
+        memset(ptr + bytesRead, 0, req - bytesRead);
     }
 }
 

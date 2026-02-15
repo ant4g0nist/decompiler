@@ -36,7 +36,8 @@ using std::ifstream;
 using std::dec;
 using std::hex;
 
-#define bogus_uri "http://unused.uri"
+// Returned by reference by several SAX compatibility methods.
+static const string bogus_uri("http://unused.uri");
 /// \brief The \e attributes for a single XML element
 ///
 /// A container for name/value pairs (of strings) for the formal attributes, as collected during parsing.

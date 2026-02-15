@@ -75,7 +75,8 @@ add_library(lldbghidra SHARED
     src/DecompileCommand.cpp
 )
 
-target_compile_definitions(lldbghidra PRIVATE NDEBUG)
+# Let the build configuration control asserts (CMake will define NDEBUG for Release).
+target_compile_definitions(lldbghidra PRIVATE $<$<CONFIG:Release>:NDEBUG>)
 target_include_directories(lldbghidra PRIVATE
     "${LLDB_INCLUDE_DIR}"
     "${CMAKE_SOURCE_DIR}/src"

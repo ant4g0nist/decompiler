@@ -1,4 +1,4 @@
-/* lldbghidra - LGPL - Copyright 2026 */
+/* lldbghidra - MIT License - Copyright 2026 */
 
 #include "ArchMap.h"
 #include <stdexcept>

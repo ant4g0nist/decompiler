@@ -1,4 +1,4 @@
-/* lldbghidra - LGPL - Copyright 2026 */
+/* lldbghidra - MIT License - Copyright 2026 */
 
 #ifndef LLDBGHIDRA_LLDBSCOPE_H
 #define LLDBGHIDRA_LLDBSCOPE_H

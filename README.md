@@ -6,12 +6,21 @@ Inspired by [r2ghidra](https://github.com/radareorg/r2ghidra), which integrates 
 
 ## Requirements
 
+### macOS
 - macOS (arm64 or x86_64)
 - Xcode (or Command Line Tools) with LLDB
 - CMake 3.16+
 - zlib
 
+### Linux
+- LLDB and liblldb-dev (e.g., `lldb-18` and `liblldb-18-dev` on Ubuntu)
+- CMake 3.16+
+- C++20 compiler (g++ 11+ or clang++ 14+)
+- zlib (`zlib1g-dev` on Ubuntu)
+
 ## Build
+
+### macOS
 
 ```bash
 mkdir -p build && cd build
@@ -21,6 +30,28 @@ cmake --build . -j$(sysctl -n hw.ncpu)
 
 This produces `build/lldbghidra.dylib`.
 
+### Linux
+
+```bash
+mkdir -p build && cd build
+cmake .. -DCMAKE_BUILD_TYPE=Release
+cmake --build . -j$(nproc)
+```
+
+This produces `build/lldbghidra.so`.
+
+If LLDB is installed in a non-standard location, pass `-DLLDB_DIR=/path/to/llvm` to cmake.
+
+### Docker
+
+```bash
+docker build -t lldbghidra .
+
+# Run decompilation tests (requires ptrace permissions)
+docker run --rm --security-opt seccomp=unconfined --cap-add=SYS_PTRACE \
+    lldbghidra bash /src/test/docker_test.sh
+```
+
 ## Usage
 
 ### Loading the plugin
@@ -28,8 +59,13 @@ This produces `build/lldbghidra.dylib`.
 Set `SLEIGHHOME` to point to the compiled spec files, then load the plugin:
 
 ```bash
+# macOS
 SLEIGHHOME=/path/to/decompiler/specfiles lldb
 (lldb) plugin load /path/to/decompiler/build/lldbghidra.dylib
+
+# Linux
+SLEIGHHOME=/path/to/decompiler/specfiles lldb-18
+(lldb) plugin load /path/to/decompiler/build/lldbghidra.so
 ```
 
 Or add to `~/.lldbinit` for automatic loading:
@@ -37,7 +73,8 @@ Or add to `~/.lldbinit` for automatic loading:
 ```
 # ~/.lldbinit
 command script import -c "import os; os.environ['SLEIGHHOME'] = '/path/to/decompiler/specfiles'"
-plugin load /path/to/decompiler/build/lldbghidra.dylib
+# macOS: plugin load /path/to/decompiler/build/lldbghidra.dylib
+# Linux: plugin load /path/to/decompiler/build/lldbghidra.so
 ```
 
 ### Decompiling functions
